@@ -14,8 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up variables
+        id: vars
+        run: |
+          echo "IMAGE=ghcr.io/${{ github.repository }}/petclinic" >> $GITHUB_ENV
+          echo "TAG=${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/petclinic:latest .
+        run: docker build -t $IMAGE:$TAG -t $IMAGE:latest .
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -25,4 +31,26 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/petclinic:latest
+        run: |
+          docker push $IMAGE:$TAG
+          docker push $IMAGE:latest
+
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: romangulyako/petclinic-infra
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          path: infra
+
+      - name: Update Deployment manifest
+        run: |
+          sed -i "s|image: ghcr.io.*/petclinic:.*|image: $IMAGE:$TAG|" infra/k8s/base/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          cd infra
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add k8s/base/deployment.yaml
+          git commit -m "Update PetClinic image to $IMAGE:$TAG"
+          git push origin main
