@@ -56,7 +56,7 @@ jobs:
 
       - name: Update Deployment manifest
         run: |
-          sed -i "s|image: ghcr.io.*/petclinic:.*|image: $IMAGE:$TAG|" infra/k8s/base/deployment.yaml
+          sed -i "s|image: ghcr.io.*/petclinic:.*|image: $IMAGE:$TAG|" infra/k8s/base/rollout.yaml
 
       - name: Commit and push changes
         run: |
