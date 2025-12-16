@@ -66,3 +66,19 @@ jobs:
           git add k8s/base/rollout.yaml
           git commit -m "Update PetClinic image to $IMAGE:$TAG"
           git push origin main
+
+      - name: Notify Telegram on Success
+        if: success()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "PetClinic CI Success! Pipeline completed."
+
+      - name: Notify Telegram on Failure
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "PetClinic CI Failed! Check logs."
