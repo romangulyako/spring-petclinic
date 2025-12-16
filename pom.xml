@@ -160,6 +160,25 @@
 
   <build>
     <plugins>
+      <!-- SpotBugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.3.0</version>
+        <configuration>
+          <failOnError>true</failOnError>
+        </configuration>
+      </plugin>
+
+      <!-- PMD -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.21.0</version>
+        <configuration>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -401,24 +420,6 @@
                     </pluginExecution>
                   </pluginExecutions>
                 </lifecycleMappingMetadata>
-              </configuration>
-            </plugin>
-            <plugin>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs-maven-plugin</artifactId>
-              <version>4.7.3.0</version>
-              <configuration>
-                <failOnError>true</failOnError>
-              </configuration>
-            </plugin>
-
-            <!-- PMD -->
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-pmd-plugin</artifactId>
-              <version>3.21.0</version>
-              <configuration>
-                <failOnViolation>true</failOnViolation>
               </configuration>
             </plugin>
           </plugins>
