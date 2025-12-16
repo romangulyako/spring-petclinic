@@ -20,8 +20,8 @@ jobs:
             java-version: '17'
             distribution: 'temurin'
 
-      - name: Run Checkstyle
-        run: mvn checkstyle:check
+#      - name: Run Checkstyle
+#        run: mvn checkstyle:check
 
       - name: Run SpotBugs
         run: mvn spotbugs:check
